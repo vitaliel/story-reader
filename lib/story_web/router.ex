@@ -18,6 +18,8 @@ defmodule StoryWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    live "/stories", StoryLive.Index, :index
+    live "/stories/:id", StoryLive.Show, :show
   end
 
   # Other scopes may use custom stacks.

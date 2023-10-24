@@ -1,0 +1,21 @@
+<.header>
+  <%= @story.id %>. <%= @story.title %>
+
+  <:actions>
+    <.link patch={~p"/stories/#{@story.id - 1}"} :if={@story.id > 1}>
+      Prev
+    </.link>
+
+    <.link patch={~p"/stories/#{@story.id + 1}"} :if={@story.id < @story_count}>
+      Next
+    </.link>
+  </:actions>
+</.header>
+
+<audio controls>
+  <source src={src} :for={src <- @story.audio } type={if String.ends_with?(src, "ogg") do "audio/ogg" else "audio/mpeg" end}>
+</audio>
+
+<pre>
+   <%= @story.story %>
+</pre>
