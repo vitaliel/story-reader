@@ -1,4 +1,7 @@
-<div id="stories" phx-update={match?(%Phoenix.LiveView.LiveStream{}, @streams.stories) && "stream"}>
+<div
+  id="stories"
+  phx-update={match?(%Phoenix.LiveView.LiveStream{}, @streams.stories) && "stream"}
+>
   <ul>
     <li :for={{_id, story} <- @streams.stories}>
       <.link navigate={~p"/stories/#{story.id}"}>

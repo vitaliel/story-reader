@@ -10,13 +10,13 @@ defmodule StoryWeb.StoryLive.Show do
 
   @impl true
   def handle_params(%{"id" => id_str}, _, socket) do
-    id = String.to_integer id_str
+    id = String.to_integer(id_str)
     %{count: count, story: story} = JsonRepo.get(id)
+
     {:noreply,
-      socket
-      |> assign(:story, story)
-      |> assign(:story_count, count)
-      |> assign(:page_title, story.title)
-    }
+     socket
+     |> assign(:story, story)
+     |> assign(:story_count, count)
+     |> assign(:page_title, story.title)}
   end
 end
