@@ -12,7 +12,7 @@
   </:actions>
 </.header>
 
-<audio controls>
+<audio controls id={"audio-#{@story.id}"}>
   <source
     :for={src <- @story.audio}
     src={src}
@@ -26,6 +26,6 @@
   />
 </audio>
 
-<pre>
+<pre style="font-size: 18px">
    <%= @story.story %>
 </pre>
