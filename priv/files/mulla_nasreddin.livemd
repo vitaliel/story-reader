@@ -1,0 +1,57 @@
+# mulla nasreddin
+
+```elixir
+Mix.install([
+  {:floki, "~> 0.35.1"},
+  {:req, "~> 0.4.4"}
+])
+```
+
+## Section
+
+```elixir
+resp = Req.get!("https://voetica.com/poets/706/4")
+```
+
+```elixir
+{:ok, document} = Floki.parse_document(resp.body)
+links_html = Floki.find(document, "a.poetPoems")
+
+links =
+  links_html
+  |> Enum.map(fn x ->
+    [href | _] = Floki.attribute(x, "href")
+    [href, Floki.text(x)]
+  end)
+
+# |> Enum.take(5)
+```
+
+```elixir
+pages =
+  links
+  |> Enum.map(fn x ->
+    [href, title] = x
+    resp = Req.get!(href)
+    [href, title, resp.body]
+  end)
+```
+
+```elixir
+items =
+  pages
+  |> Enum.map(fn x ->
+    [href, title, html] = x
+    {:ok, doc} = Floki.parse_document(html)
+    story = Floki.find(doc, "pre") |> Floki.text()
+    audio_files = Floki.find(doc, "audio source") |> Floki.attribute("src")
+    %{url: href, title: title, story: story, audio: audio_files}
+  end)
+```
+
+```elixir
+# Enum.count(items) # 165
+# Jason.encode!(items)
+# File.cwd!
+File.write!("mulla.json", Jason.encode!(items))
+```
